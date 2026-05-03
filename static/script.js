@@ -68,40 +68,31 @@ document.addEventListener('DOMContentLoaded', () => {
     renderTasks();
   }
 
-  // Optimize schedule with AI
+  // Optimize schedule
   optimizeBtn.addEventListener('click', async () => {
     if (tasks.length === 0) {
       alert('No tasks to optimize. Add some tasks first!');
       return;
     }
-    
+
     optimizeBtn.disabled = true;
     optimizeBtn.textContent = 'Loading suggestion...';
-    
+
     try {
       const response = await fetch('/api/suggest-schedule', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ tasks })
       });
-      
+
       const data = await response.json();
-      
-      if (data.error && data.mode !== 'demo') {
-        suggestionDiv.innerHTML = `<p style="color: red;">❌ Error: ${data.error}</p>`;
-      } else {
-        const modeIndicator = data.mode === 'demo' 
-          ? '<div style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 10px; margin-bottom: 10px; border-radius: 4px;"><strong>⚙️ Demo Mode:</strong> Using mock suggestions (add your OpenAI API key for real AI)</div>'
-          : '<div style="background: #d4edda; border-left: 4px solid #28a745; padding: 10px; margin-bottom: 10px; border-radius: 4px;"><strong>✅ Live Mode:</strong> Real AI suggestions</div>';
-        
-        suggestionDiv.innerHTML = `<div class="suggestion-box">${modeIndicator}<h3>✨ AI Suggestion:</h3><p>${data.suggestion.replace(/\n/g, '<br>')}</p></div>`;
-      }
+      suggestionDiv.innerHTML = `<div class="suggestion-box"><h3>✨ Schedule Suggestion</h3><p>${data.suggestion.replace(/\n/g, '<br>')}</p></div>`;
     } catch (error) {
       console.error(error);
       suggestionDiv.innerHTML = '<p style="color: red;">⚠️ Connection error. Check if the server is running.</p>';
     } finally {
       optimizeBtn.disabled = false;
-      optimizeBtn.textContent = 'Optimize Schedule with AI';
+      optimizeBtn.textContent = 'Get Optimized Schedule';
     }
   });
 

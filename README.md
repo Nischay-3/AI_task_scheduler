@@ -1,21 +1,20 @@
-# AI Task Scheduler & Reminder
+# Smart Task Scheduler & Reminder
 
-A Python Flask-based web application for task scheduling and reminder management with AI-powered schedule optimization using OpenAI GPT.
+A Python Flask-based web application for task scheduling and reminder management with built-in demo-driven schedule suggestions.
 
 ## Features
 
 - ✅ Add tasks with title, description, and due date
-- ✅ View list of all tasks  
-- 🤖 AI-powered schedule optimization using OpenAI GPT-3.5
+- ✅ View task list with deadlines
+- ✅ Get optimized schedule recommendations instantly
 - 🔔 Browser notifications for upcoming reminders
-- 💾 Local storage for task persistence
-- 🎨 Modern, responsive UI with gradient design
+- 💾 Local storage for persistence
+- 🎨 Polished responsive UI with modern styling
 
 ## Tech Stack
 
 - **Backend:** Python Flask
 - **Frontend:** HTML, CSS, JavaScript
-- **AI:** OpenAI GPT-3.5-turbo
 - **Database:** Browser Local Storage
 
 ## Setup & Installation
@@ -37,24 +36,19 @@ A Python Flask-based web application for task scheduling and reminder management
    pip install -r requirements.txt
    ```
 
-4. **Set up your OpenAI API key:**
-   - Open the `.env` file
-   - Replace `your_openai_api_key_here` with your actual OpenAI API key
-   - Get your key from https://platform.openai.com/api-keys
-
-5. **Run the application:**
+4. **Run the application:**
    ```bash
    python app.py
    ```
 
-6. **Open in browser:**
+5. **Open in browser:**
    Navigate to `http://localhost:3000`
 
 ## Usage
 
 1. **Add a Task:** Fill in the task title, description (optional), and due date, then click "Add Task"
-2. **View Tasks:** All tasks are displayed in a list with their due dates
-3. **Optimize with AI:** Click "Optimize Schedule with AI" to get personalized task prioritization suggestions
+2. **View Tasks:** Tasks appear in a clean task list with due time and overdue highlighting
+3. **Get a Schedule:** Click "Get Optimized Schedule" to receive a suggested task order
 4. **Delete Tasks:** Click the "Delete" button on any task to remove it
 5. **Get Reminders:** Browser notifications appear 5 minutes before task deadlines
 
@@ -62,40 +56,23 @@ A Python Flask-based web application for task scheduling and reminder management
 
 ```
 ai-task-scheduler/
-├── app.py                 # Flask backend with OpenAI integration
+├── app.py                 # Flask backend with demo suggestion logic
 ├── requirements.txt       # Python dependencies
-├── .env                   # Environment variables (API key)
 ├── templates/
-│   └── index.html        # Main HTML template
+│   └── index.html         # Main HTML template
 └── static/
-    ├── style.css         # CSS styling
-    └── script.js         # Frontend JavaScript logic
-```
-
-## Environment Variables
-
-Create a `.env` file in the root directory:
-
-```
-OPENAI_API_KEY=your_openai_api_key_here
+    ├── style.css          # CSS styling
+    └── script.js          # Frontend JavaScript logic
 ```
 
 ## Dependencies
 
 - Flask - Web framework
 - Flask-CORS - Cross-Origin Resource Sharing
-- python-dotenv - Environment variable management
-- openai - OpenAI API client
 
-## How AI Suggestions Work
+## How Schedule Suggestions Work
 
-The application uses OpenAI's GPT-3.5-turbo model to analyze your tasks and suggest an optimal order based on:
-- Priority levels
-- Deadlines/Due dates
-- Task dependencies
-- Estimated complexity
-
-The AI provides detailed reasoning for each suggestion.
+The application generates schedule recommendations by ordering tasks by due date and delivering clear reasoning for the suggested workflow.
 
 ## License
 
