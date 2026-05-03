@@ -9,19 +9,21 @@
 <body>
   <div class="container">
     <header class="hero">
-      <h1>Smart Task Scheduler</h1>
-      <p>Organize your tasks, set reminders, and get a smarter daily plan with an intuitive scheduler.</p>
+      <h1>AI Task Scheduler & Reminder</h1>
+      <p>Organize your tasks, send email reminders, and get a smart suggested plan instantly.</p>
     </header>
 
     <form id="task-form">
       <input type="text" id="task-title" placeholder="Task Title" required>
       <textarea id="task-description" placeholder="Description (optional)"></textarea>
       <input type="datetime-local" id="task-due" required>
+      <input type="email" id="task-email" placeholder="Reminder Email (optional)">
       <button type="submit" class="btn-add">Add Task</button>
     </form>
 
     <button id="optimize-btn" class="btn-optimize">Get Optimized Schedule</button>
 
+    <div id="status-message" class="status-message"></div>
     <div id="suggestion"></div>
 
     <section class="task-section">

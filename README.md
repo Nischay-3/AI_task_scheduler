@@ -36,12 +36,17 @@ A Python Flask-based web application for task scheduling and reminder management
    pip install -r requirements.txt
    ```
 
-4. **Run the application:**
+4. **Configure email reminders (optional):**
+   - Open the `.env` file
+   - Add your SMTP settings for email reminders
+   - Example SMTP configuration is already included in `.env`
+
+5. **Run the application:**
    ```bash
    python app.py
    ```
 
-5. **Open in browser:**
+6. **Open in browser:**
    Navigate to `http://localhost:3000`
 
 ## Usage

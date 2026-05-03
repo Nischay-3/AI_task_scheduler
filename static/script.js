@@ -3,72 +3,105 @@ document.addEventListener('DOMContentLoaded', () => {
   const taskList = document.getElementById('task-list');
   const optimizeBtn = document.getElementById('optimize-btn');
   const suggestionDiv = document.getElementById('suggestion');
+  const statusMessage = document.getElementById('status-message');
 
   let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
 
-  // Request notification permission
   if ('Notification' in window) {
     Notification.requestPermission();
   }
 
-  // Render tasks
+  function setStatus(message, type = 'info') {
+    const color = type === 'error' ? '#dc2626' : '#047857';
+    statusMessage.innerHTML = `<div class="status-box" style="border-color: ${color}; color: ${color};">${message}</div>`;
+    setTimeout(() => {
+      statusMessage.innerHTML = '';
+    }, 7000);
+  }
+
   function renderTasks() {
     taskList.innerHTML = '';
     if (tasks.length === 0) {
-      taskList.innerHTML = '<li style="text-align: center; color: #999; border: none;">No tasks yet. Add one to get started!</li>';
+      taskList.innerHTML = '<li class="empty-state">No tasks yet. Add one to get started!</li>';
       return;
     }
+
     tasks.forEach((task, index) => {
       const li = document.createElement('li');
       const dueDate = new Date(task.due);
       const now = new Date();
       const isOverdue = dueDate < now;
-      
+
       if (isOverdue) {
         li.classList.add('overdue');
       }
-      
+
       const taskContent = document.createElement('div');
       taskContent.innerHTML = `
         <strong>${task.title}</strong>
         <p>${task.description || 'No description'}</p>
         <small>📅 Due: ${dueDate.toLocaleString()}</small>
+        ${task.email ? `<small>📧 Reminder Email: ${task.email}</small>` : ''}
       `;
-      
+
       const deleteBtn = document.createElement('button');
       deleteBtn.classList.add('delete-btn');
       deleteBtn.textContent = 'Delete';
       deleteBtn.addEventListener('click', () => deleteTask(index));
-      
+
       li.appendChild(taskContent);
       li.appendChild(deleteBtn);
       taskList.appendChild(li);
     });
   }
 
-  // Add task
-  taskForm.addEventListener('submit', (e) => {
+  async function sendReminderEmail(task) {
+    if (!task.email) {
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/send-reminder', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(task)
+      });
+      const data = await response.json();
+
+      if (data.error) {
+        setStatus(`Email not sent: ${data.error}`, 'error');
+      } else {
+        setStatus('Reminder email sent successfully.');
+      }
+    } catch (error) {
+      console.error(error);
+      setStatus('Unable to send reminder email. Check server or SMTP settings.', 'error');
+    }
+  }
+
+  taskForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const title = document.getElementById('task-title').value;
     const description = document.getElementById('task-description').value;
     const due = document.getElementById('task-due').value;
-    
+    const email = document.getElementById('task-email').value;
+
     if (title.trim()) {
-      tasks.push({ title, description, due });
+      const task = { title, description, due, email };
+      tasks.push(task);
       localStorage.setItem('tasks', JSON.stringify(tasks));
       renderTasks();
       taskForm.reset();
+      await sendReminderEmail(task);
     }
   });
 
-  // Delete task
   function deleteTask(index) {
     tasks.splice(index, 1);
     localStorage.setItem('tasks', JSON.stringify(tasks));
     renderTasks();
   }
 
-  // Optimize schedule
   optimizeBtn.addEventListener('click', async () => {
     if (tasks.length === 0) {
       alert('No tasks to optimize. Add some tasks first!');
@@ -96,13 +129,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Check for reminders
   setInterval(() => {
     const now = new Date();
     tasks.forEach(task => {
       const dueDate = new Date(task.due);
       const timeDiff = dueDate - now;
-      if (timeDiff > 0 && timeDiff < 300000) { // Within 5 minutes
+      if (timeDiff > 0 && timeDiff < 300000) {
         if ('Notification' in window && Notification.permission === 'granted') {
           new Notification(`⏰ Reminder: ${task.title}`, {
             body: `Due at ${dueDate.toLocaleString()}`,
@@ -111,7 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
     });
-  }, 30000); // Check every 30 seconds
+  }, 30000);
 
   renderTasks();
 });
