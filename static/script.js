@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     optimizeBtn.disabled = true;
-    optimizeBtn.textContent = 'Loading AI suggestion...';
+    optimizeBtn.textContent = 'Loading suggestion...';
     
     try {
       const response = await fetch('/api/suggest-schedule', {
@@ -87,14 +87,18 @@ document.addEventListener('DOMContentLoaded', () => {
       
       const data = await response.json();
       
-      if (data.error) {
-        suggestionDiv.innerHTML = `<p style="color: red;">Error: ${data.error}</p>`;
+      if (data.error && data.mode !== 'demo') {
+        suggestionDiv.innerHTML = `<p style="color: red;">❌ Error: ${data.error}</p>`;
       } else {
-        suggestionDiv.innerHTML = `<div class="suggestion-box"><h3>✨ AI Suggestion:</h3><p>${data.suggestion.replace(/\n/g, '<br>')}</p></div>`;
+        const modeIndicator = data.mode === 'demo' 
+          ? '<div style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 10px; margin-bottom: 10px; border-radius: 4px;"><strong>⚙️ Demo Mode:</strong> Using mock suggestions (add your OpenAI API key for real AI)</div>'
+          : '<div style="background: #d4edda; border-left: 4px solid #28a745; padding: 10px; margin-bottom: 10px; border-radius: 4px;"><strong>✅ Live Mode:</strong> Real AI suggestions</div>';
+        
+        suggestionDiv.innerHTML = `<div class="suggestion-box">${modeIndicator}<h3>✨ AI Suggestion:</h3><p>${data.suggestion.replace(/\n/g, '<br>')}</p></div>`;
       }
     } catch (error) {
       console.error(error);
-      suggestionDiv.innerHTML = '<p style="color: red;">Error getting AI suggestion. Check your API key in .env</p>';
+      suggestionDiv.innerHTML = '<p style="color: red;">⚠️ Connection error. Check if the server is running.</p>';
     } finally {
       optimizeBtn.disabled = false;
       optimizeBtn.textContent = 'Optimize Schedule with AI';
