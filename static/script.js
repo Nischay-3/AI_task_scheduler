@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function renderTasks() {
     taskList.innerHTML = '';
     if (tasks.length === 0) {
-      taskList.innerHTML = '<li style="text-align: center; color: #999;">No tasks yet. Add one to get started!</li>';
+      taskList.innerHTML = '<li style="text-align: center; color: #999; border: none;">No tasks yet. Add one to get started!</li>';
       return;
     }
     tasks.forEach((task, index) => {
