@@ -41,7 +41,6 @@ document.addEventListener('DOMContentLoaded', () => {
         <strong>${task.title}</strong>
         <p>${task.description || 'No description'}</p>
         <small>📅 Due: ${dueDate.toLocaleString()}</small>
-        ${task.email ? `<small>📧 Reminder Email: ${task.email}</small>` : ''}
       `;
 
       const deleteBtn = document.createElement('button');
@@ -55,44 +54,19 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  async function sendReminderEmail(task) {
-    if (!task.email) {
-      return;
-    }
-
-    try {
-      const response = await fetch('/api/send-reminder', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(task)
-      });
-      const data = await response.json();
-
-      if (data.error) {
-        setStatus(`Email not sent: ${data.error}`, 'error');
-      } else {
-        setStatus('Reminder email sent successfully.');
-      }
-    } catch (error) {
-      console.error(error);
-      setStatus('Unable to send reminder email. Check server or SMTP settings.', 'error');
-    }
-  }
-
-  taskForm.addEventListener('submit', async (e) => {
+  taskForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const title = document.getElementById('task-title').value;
     const description = document.getElementById('task-description').value;
     const due = document.getElementById('task-due').value;
-    const email = document.getElementById('task-email').value;
 
     if (title.trim()) {
-      const task = { title, description, due, email };
+      const task = { title, description, due };
       tasks.push(task);
       localStorage.setItem('tasks', JSON.stringify(tasks));
       renderTasks();
       taskForm.reset();
-      await sendReminderEmail(task);
+      setStatus('Task added. Reminder notifications are enabled for upcoming due dates.');
     }
   });
 

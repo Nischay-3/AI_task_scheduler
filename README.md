@@ -36,20 +36,19 @@ A Python Flask-based web application for task scheduling and reminder management
    pip install -r requirements.txt
    ```
 
-4. **Configure email reminders (optional):**
-   - Open the `.env` file
-   - Add your SMTP settings for email reminders
-   - Example SMTP configuration is already included in `.env`
-
-5. **Run the application:**
+4. **Run the application:**
    ```bash
    python app.py
    ```
 
-6. **Open in browser:**
+5. **Open in browser:**
    Navigate to `http://localhost:3000`
 
-## Usage
+## Reminders
+
+- This app uses browser notifications to remind you about upcoming tasks.
+- Allow notifications in your browser when prompted.
+- Reminder checks run every 30 seconds for tasks due soon.
 
 1. **Add a Task:** Fill in the task title, description (optional), and due date, then click "Add Task"
 2. **View Tasks:** Tasks appear in a clean task list with due time and overdue highlighting
