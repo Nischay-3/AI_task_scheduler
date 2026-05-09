@@ -36,13 +36,23 @@ A Python Flask-based web application for task scheduling and reminder management
    pip install -r requirements.txt
    ```
 
-4. **Run the application:**
+4. **Run the application locally:**
    ```bash
    python app.py
    ```
 
 5. **Open in browser:**
    Navigate to `http://localhost:3000`
+
+## Static Website Build
+
+The project includes a static website version in the `docs/` folder. You can host this as a GitHub Pages site or any static hosting provider.
+
+- `docs/index.html` — main static page
+- `docs/style.css` — style definitions
+- `docs/script.js` — reminder and task scheduler logic
+
+To preview the static website locally, open `docs/index.html` in a browser or serve it with a simple static server.
 
 ## Reminders
 

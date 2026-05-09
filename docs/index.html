@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Task Scheduler & Reminder</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header class="hero">
+      <h1>AI Task Scheduler & Reminder</h1>
+      <p>Organize tasks, get smart scheduling suggestions, and receive browser reminders for upcoming deadlines.</p>
+    </header>
+
+    <form id="task-form" class="task-form">
+      <input type="text" id="task-title" placeholder="Task title" required>
+      <textarea id="task-description" placeholder="Description (optional)"></textarea>
+      <input type="datetime-local" id="task-due" required>
+      <button type="submit" class="btn btn-primary">Add Task</button>
+    </form>
+
+    <button id="optimize-btn" class="btn btn-secondary">Get Optimized Schedule</button>
+
+    <div id="status-message"></div>
+    <div id="suggestion"></div>
+
+    <section class="task-section">
+      <h2>Your Tasks</h2>
+      <ul id="task-list"></ul>
+    </section>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
