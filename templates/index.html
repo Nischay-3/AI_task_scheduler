@@ -3,34 +3,74 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Smart Task Scheduler</title>
+  <title>Pure Python Task Scheduler</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
   <div class="container">
     <header class="hero">
-      <h1>AI Task Scheduler & Reminder</h1>
-      <p>Organize your tasks, get smart schedule suggestions, and receive browser reminders for due tasks.</p>
+      <h1>Pure Python Task Scheduler & Reminder</h1>
+      <p>Organize your tasks, get smart schedule suggestions, and see reminders for due/overdue tasks. No JavaScript—everything is handled by Python!</p>
     </header>
 
-    <form id="task-form">
-      <input type="text" id="task-title" placeholder="Task Title" required>
-      <textarea id="task-description" placeholder="Description (optional)"></textarea>
-      <input type="datetime-local" id="task-due" required>
+    {% if message %}
+      <div class="status-box" style="border-color: #dc2626; color: #dc2626;">{{ message }}</div>
+    {% endif %}
+
+    {% if due_soon %}
+      <div class="status-box" style="border-color: #f59e42; color: #b45309; background: #fef3c7;">
+        <strong>⏰ Tasks due soon (within 5 minutes):</strong><br>
+        <ul>
+        {% for t in due_soon %}
+          <li><strong>{{ t.title }}</strong> — Due: {{ t.due.replace('T', ' ') }}{% if t.description %} ({{ t.description }}){% endif %}</li>
+        {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+
+    {% if overdue %}
+      <div class="status-box" style="border-color: #ef4444; color: #991b1b; background: #fee2e2;">
+        <strong>⚠️ Overdue tasks:</strong><br>
+        <ul>
+        {% for t in overdue %}
+          <li><strong>{{ t.title }}</strong> — Due: {{ t.due.replace('T', ' ') }}{% if t.description %} ({{ t.description }}){% endif %}</li>
+        {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+
+    <form method="POST" class="task-form" style="margin-bottom: 24px;">
+      <input type="text" name="title" placeholder="Task Title" required>
+      <textarea name="description" placeholder="Description (optional)"></textarea>
+      <input type="datetime-local" name="due" required>
       <button type="submit" class="btn-add">Add Task</button>
     </form>
 
-    <button id="optimize-btn" class="btn-optimize">Get Optimized Schedule</button>
-
-    <div id="status-message" class="status-message"></div>
-    <div id="suggestion"></div>
+    {% if suggestion %}
+      <div class="suggestion-box" style="margin-bottom: 24px;">
+        <h3>✨ Schedule Suggestion</h3>
+        <p>{{ suggestion|safe }}</p>
+      </div>
+    {% endif %}
 
     <section class="task-section">
       <h2>Your Tasks</h2>
-      <ul id="task-list"></ul>
+      {% if tasks %}
+        <ul>
+        {% for t in tasks %}
+          <li style="margin-bottom: 10px;">
+            <strong>{{ t.title }}</strong> — Due: {{ t.due.replace('T', ' ') }}
+            {% if t.description %}<br><span style="color:#64748b;">{{ t.description }}</span>{% endif %}
+            <form method="POST" action="{{ url_for('delete_task', task_id=loop.index0) }}" style="display:inline; margin-left: 12px;">
+              <button type="submit" class="delete-btn">Delete</button>
+            </form>
+          </li>
+        {% endfor %}
+        </ul>
+      {% else %}
+        <p>No tasks yet. Add one above!</p>
+      {% endif %}
     </section>
   </div>
-
-  <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
