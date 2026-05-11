@@ -47,7 +47,7 @@ def generate_suggestion(tasks):
     if not tasks:
         return "No tasks provided."
     sorted_tasks = sorted(tasks, key=lambda x: x.get('due', ''))
-    suggestion = "📋 Suggested Task Order:<br><br>"
+    suggestion = "📋 AI Task Summary & Suggested Order:<br><br>"
     for i, task in enumerate(sorted_tasks, 1):
         suggestion += f"{i}. {task['title']} (Due: {task['due'].replace('T', ' ')})<br>"
         if task.get('description'):
