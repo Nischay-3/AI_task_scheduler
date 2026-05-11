@@ -3,28 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Task Scheduler & Reminder</title>
+  <title>Task Scheduler with AI Summary</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="container">
     <header class="hero">
-      <h1>AI Task Scheduler & Reminder</h1>
-      <p>Organize tasks, get smart scheduling suggestions, and receive browser reminders for upcoming deadlines.</p>
+      <h1>Task Scheduler with AI Summary</h1>
+      <p>Organize your tasks, get smart schedule suggestions, and see reminders for due/overdue tasks. All logic is handled by Python on the server.</p>
     </header>
-
-    <form id="task-form" class="task-form">
-      <input type="text" id="task-title" placeholder="Task title" required>
+    <div class="status-box" id="status-message" style="display:none;"></div>
+    <form id="task-form" class="task-form" style="margin-bottom: 24px;">
+      <input type="text" id="task-title" placeholder="Task Title" required>
       <textarea id="task-description" placeholder="Description (optional)"></textarea>
       <input type="datetime-local" id="task-due" required>
-      <button type="submit" class="btn btn-primary">Add Task</button>
+      <button type="submit" class="btn-add">Add Task</button>
     </form>
-
-    <button id="optimize-btn" class="btn btn-secondary">Get Optimized Schedule</button>
-
-    <div id="status-message"></div>
-    <div id="suggestion"></div>
-
+    <div id="ai-summary"></div>
     <section class="task-section">
       <h2>Your Tasks</h2>
       <ul id="task-list"></ul>

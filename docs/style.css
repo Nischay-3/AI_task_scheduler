@@ -1,185 +1,100 @@
-* {
-  box-sizing: border-box;
-}
-
 body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: radial-gradient(circle at top left, rgba(255,255,255,0.25), transparent 35%),
+              linear-gradient(135deg, #4b6cb7 0%, #182848 100%);
   margin: 0;
+  padding: 24px;
   min-height: 100vh;
-  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background: radial-gradient(circle at top left, rgba(59,130,246,0.18), transparent 30%),
-              linear-gradient(135deg, #111827 0%, #1e293b 100%);
-  color: #111827;
+  color: #1f2937;
 }
 
 .container {
-  width: min(100%, 960px);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(255,255,255,0.55);
+  padding: 32px;
+  border-radius: 24px;
+  box-shadow: 0 24px 80px rgba(15, 23, 42, 0.18);
+  width: min(100%, 820px);
   margin: 0 auto;
-  padding: 28px 22px;
 }
 
 .hero {
   text-align: center;
-  margin-bottom: 28px;
-  color: white;
+  margin-bottom: 24px;
 }
 
 .hero h1 {
-  font-size: clamp(2rem, 4vw, 3.5rem);
   margin: 0;
+  font-size: clamp(2rem, 4vw, 3rem);
   letter-spacing: -0.04em;
+  color: #111827;
 }
 
 .hero p {
-  margin-top: 12px;
-  max-width: 760px;
-  margin-left: auto;
-  margin-right: auto;
-  color: rgba(255,255,255,0.85);
+  margin: 16px auto 0;
+  max-width: 640px;
+  color: #4b5563;
   font-size: 1rem;
-  line-height: 1.8;
+  line-height: 1.7;
 }
 
-.task-form {
+form {
   display: grid;
   gap: 14px;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(148,163,184,0.24);
-  padding: 22px;
-  border-radius: 24px;
-  backdrop-filter: blur(10px);
+  margin-bottom: 24px;
 }
 
 input, textarea {
   width: 100%;
   padding: 14px 16px;
-  border: 1px solid rgba(148,163,184,0.3);
+  border: 1px solid rgba(148, 163, 184, 0.3);
   border-radius: 16px;
-  background: rgba(255,255,255,0.9);
-  font-family: inherit;
   font-size: 1rem;
   color: #111827;
+  background: rgba(255,255,255,0.9);
+  transition: border-color 0.25s ease, transform 0.25s ease;
 }
 
-textarea {
-  min-height: 86px;
-  resize: vertical;
-}
-
-.btn {
-  width: fit-content;
-  border: none;
-  border-radius: 16px;
-  padding: 14px 22px;
-  font-size: 1rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.btn-primary {
-  background: #2563eb;
-  color: white;
-}
-
-.btn-secondary {
-  background: #22c55e;
-  color: white;
-  margin-top: 18px;
-}
-
-.btn:hover {
+input:focus, textarea:focus {
+  outline: none;
+  border-color: #4f46e5;
   transform: translateY(-1px);
 }
 
-#status-message {
-  margin-top: 20px;
-}
-
-.status-box {
-  padding: 16px 18px;
-  border-radius: 16px;
-  background: rgba(255,255,255,0.92);
-  border: 1px solid rgba(16,185,129,0.25);
-  color: #164e2a;
-}
-
-#suggestion {
-  margin-top: 18px;
-}
-
-.suggestion-box {
-  padding: 18px 20px;
-  border-radius: 18px;
-  border: 1px solid rgba(59,130,246,0.2);
-  background: rgba(236,246,255,0.9);
-  color: #0f172a;
-}
-
-.task-section {
-  margin-top: 32px;
-}
-
-.task-section h2 {
-  color: white;
-  margin-bottom: 16px;
-}
-
-#task-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: grid;
-  gap: 14px;
-}
-
-.task-item {
-  background: rgba(255,255,255,0.95);
-  padding: 18px;
-  border-radius: 18px;
-  box-shadow: 0 20px 60px rgba(15,23,42,0.12);
-  display: grid;
-  gap: 10px;
-}
-
-.task-item.overdue {
-  border: 1px solid #ef4444;
-  background: #fff1f2;
-}
-
-.task-item strong {
-  display: block;
-  font-size: 1.08rem;
-  color: #0f172a;
-}
-
-.task-item p,
-.task-item small {
-  margin: 0;
-  color: #475569;
-}
-
-.delete-btn {
+.btn-add, .btn-optimize {
+  padding: 14px 18px;
   border: none;
-  background: #ef4444;
-  color: white;
-  border-radius: 14px;
-  padding: 10px 14px;
+  border-radius: 16px;
+  font-size: 1rem;
   cursor: pointer;
   font-weight: 700;
-  justify-self: start;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-.delete-btn:hover {
-  background: #dc2626;
+.btn-add {
+  background: #10b981;
+  color: white;
 }
 
-@media (max-width: 640px) {
-  .container {
-    padding: 20px 16px;
-  }
+.btn-add:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 30px rgba(16, 185, 129, 0.18);
+}
 
-  .task-form,
-  .task-item {
-    padding: 18px;
-  }
+.btn-optimize {
+  background: #4338ca;
+  color: white;
+  width: 100%;
+}
+
+.btn-optimize:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 30px rgba(67, 56, 202, 0.2);
+}
+
+.btn-optimize:disabled {
+  background-color: #94a3b8;
+  cursor: not-allowed;
+  box-shadow: none;
 }

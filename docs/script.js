@@ -54,13 +54,39 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+
+  function generateAISummary(tasks) {
+    if (tasks.length === 0) return '';
+    // Keyword analysis
+    const keywords = {};
+    tasks.forEach(t => {
+      (t.title + ' ' + t.description).toLowerCase().split(/\W+/).forEach(word => {
+        if (word.length > 3) keywords[word] = (keywords[word] || 0) + 1;
+      });
+    });
+    const topKeywords = Object.entries(keywords).sort((a, b) => b[1] - a[1]).slice(0, 3);
+    let summary = '<b>AI Summary:</b> ';
+    if (topKeywords.length)
+      summary += 'Main focus: ' + topKeywords.map(([k]) => k).join(', ') + '. ';
+    if (tasks.some(t => /report/i.test(t.title + t.description)))
+      summary += 'You have reporting tasks—allocate time for documentation. ';
+    if (tasks.some(t => /meeting/i.test(t.title + t.description)))
+      summary += 'Prepare for upcoming meetings. ';
+    if (tasks.some(t => /email/i.test(t.title + t.description)))
+      summary += 'Check and respond to important emails. ';
+    if (tasks.length > 5)
+      summary += 'You have a heavy workload—consider prioritizing urgent items. ';
+    return summary;
+  }
+
   function generateSuggestion(tasks) {
     if (tasks.length === 0) {
       return 'Add tasks to see schedule recommendations.';
     }
 
     const sorted = [...tasks].sort((a, b) => new Date(a.due) - new Date(b.due));
-    let suggestion = '📋 Suggested task order:\n\n';
+    let suggestion = '📋 AI Task Summary & Suggested Order:\n\n';
+    suggestion += generateAISummary(tasks) + '\n';
     sorted.forEach((task, index) => {
       suggestion += `${index + 1}. ${task.title} (Due: ${new Date(task.due).toLocaleString()})\n`;
       if (task.description) {
@@ -68,7 +94,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       suggestion += '\n';
     });
-
     suggestion += '💡 Reasoning:\nTasks are ordered by due date so urgent items appear first. Focus on the nearest deadline, then move to later tasks.';
     return suggestion;
   }
@@ -113,9 +138,29 @@ document.addEventListener('DOMContentLoaded', () => {
     setStatus('Task added and reminder is active.');
   });
 
-  optimizeBtn.addEventListener('click', () => {
-    suggestionDiv.innerHTML = `<div class="suggestion-box"><h3>✨ Schedule Suggestion</h3><p>${generateSuggestion(tasks).replace(/\n/g, '<br>')}</p></div>`;
-  });
+
+  // Show AI summary always
+  function renderAISummary() {
+    const aiSummaryDiv = document.getElementById('ai-summary');
+    if (tasks.length === 0) {
+      aiSummaryDiv.innerHTML = '';
+      return;
+    }
+    aiSummaryDiv.innerHTML = `<div class="suggestion-box" style="margin-bottom: 24px;"><h3>✨ AI Task Summary & Suggested Order</h3><p>${generateSuggestion(tasks).replace(/\n/g, '<br>')}</p></div>`;
+  }
+
+  // Remove optimize button and suggestionDiv logic
+
+  // Initial render
+  renderTasks();
+  renderAISummary();
+
+  // Re-render summary on task changes
+  const origRenderTasks = renderTasks;
+  renderTasks = function() {
+    origRenderTasks();
+    renderAISummary();
+  };
 
   renderTasks();
 });
